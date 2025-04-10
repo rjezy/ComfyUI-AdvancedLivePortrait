@@ -648,7 +648,7 @@ class Command:
         self.keep = keep
 
 crop_factor_default = 1.7
-crop_factor_min = 1.5
+crop_factor_min = 1.0
 crop_factor_max = 2.5
 
 class AdvancedLivePortrait:
@@ -848,7 +848,7 @@ class ExpressionEditor:
                 "rotate_roll": ("FLOAT", {"default": 0, "min": -20, "max": 20, "step": 0.5, "display": display}),
 
                 "blink": ("FLOAT", {"default": 0, "min": -20, "max": 5, "step": 0.5, "display": display}),
-                "eyebrow": ("FLOAT", {"default": 0, "min": -10, "max": 15, "step": 0.5, "display": display}),
+                "eyebrow": ("FLOAT", {"default": 0, "min": -15, "max": 15, "step": 0.5, "display": display}),
                 "wink": ("FLOAT", {"default": 0, "min": 0, "max": 25, "step": 0.5, "display": display}),
                 "pupil_x": ("FLOAT", {"default": 0, "min": -15, "max": 15, "step": 0.5, "display": display}),
                 "pupil_y": ("FLOAT", {"default": 0, "min": -15, "max": 15, "step": 0.5, "display": display}),
@@ -869,8 +869,8 @@ class ExpressionEditor:
             },
         }
 
-    RETURN_TYPES = ("IMAGE", "EDITOR_LINK", "EXP_DATA")
-    RETURN_NAMES = ("image", "motion_link", "save_exp")
+    RETURN_TYPES = ("IMAGE", "EDITOR_LINK", "EXP_DATA", "IMAGE")
+    RETURN_NAMES = ("image", "motion_link", "save_exp", "cropped_image")
 
     FUNCTION = "run"
 
@@ -961,7 +961,7 @@ class ExpressionEditor:
 
         new_editor_link.append(es)
 
-        return {"ui": {"images": results}, "result": (out_img, new_editor_link, es)}
+        return {"result": (out_img, new_editor_link, es, pil2tensor(crop_out))}
 
 NODE_CLASS_MAPPINGS = {
     "AdvancedLivePortrait": AdvancedLivePortrait,
